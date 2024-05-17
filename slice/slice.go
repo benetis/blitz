@@ -4,9 +4,14 @@ import (
 	"sync"
 )
 
-const maxWorkers = 8
+const defaultWorkers = 8
 
-func Map[T any, R any](inputs []T, fn func(T) R) []R {
+func Map[T any, R any](inputs []T, fn func(T) R, maxWorkers ...int) []R {
+	numWorkers := defaultWorkers
+	if len(maxWorkers) > 0 && maxWorkers[0] > 0 {
+		numWorkers = maxWorkers[0]
+	}
+
 	var wg sync.WaitGroup
 	outputs := make([]R, len(inputs))
 	jobs := make(chan int, len(inputs))
@@ -18,7 +23,7 @@ func Map[T any, R any](inputs []T, fn func(T) R) []R {
 		}
 	}
 
-	for w := 0; w < maxWorkers; w++ {
+	for w := 0; w < numWorkers; w++ {
 		wg.Add(1)
 		go worker()
 	}
