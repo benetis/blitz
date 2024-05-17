@@ -18,6 +18,6 @@ func main() {
 	strs := []string{"a", "b", "c"}
 	uppercased := blitz.Map(strs, func(input string) string {
 		return strings.ToUpper(input)
-	})
+	}, 2)
 	fmt.Println("Uppercased:", uppercased)
 }
