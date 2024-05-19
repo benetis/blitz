@@ -20,4 +20,12 @@ func main() {
 		return strings.ToUpper(input)
 	}, 2)
 	fmt.Println("Uppercased:", uppercased)
+
+	// Filter
+	inputs = []int{-1, -2, 3, 4}
+	positive := blitz.Filter(inputs, func(input int) bool {
+		return input > 0
+	})
+	fmt.Println("Positive:", positive)
+
 }
