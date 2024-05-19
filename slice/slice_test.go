@@ -44,3 +44,16 @@ func TestMapWithMaxWorkers(t *testing.T) {
 		t.Errorf("Map() = %v; want %v", result, expected)
 	}
 }
+
+func TestMapForCorrectChunking(t *testing.T) {
+	inputs := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+	expected := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+
+	result := Map(inputs, func(input int) int {
+		return input - 1
+	})
+
+	if !reflect.DeepEqual(result, expected) {
+		t.Errorf("Map() = %v; want %v", result, expected)
+	}
+}
