@@ -10,7 +10,6 @@ func Filter[T any](inputs []T, fn func(T) bool, maxWorkers ...int) []T {
 	}
 
 	var wg sync.WaitGroup
-	var mu sync.Mutex
 
 	filterFlags := make([]bool, len(inputs))
 	chunkSize := calcChunkSize(len(inputs), numWorkers)
@@ -18,11 +17,7 @@ func Filter[T any](inputs []T, fn func(T) bool, maxWorkers ...int) []T {
 	worker := func(start int, end int) {
 		defer wg.Done()
 		for i := start; i < end; i++ {
-			if fn(inputs[i]) {
-				mu.Lock()
-				filterFlags[i] = true
-				mu.Unlock()
-			}
+			filterFlags[i] = fn(inputs[i])
 		}
 	}
 
